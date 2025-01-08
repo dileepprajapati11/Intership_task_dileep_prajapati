@@ -1,0 +1,75 @@
+1. Find the Total Number of Orders for Each Customer
+
+ SELECT customer_id, COUNT(order_id) AS total_orders
+FROM Orders
+GROUP BY customer_id;
+
+ 2. Find the Total Sales Amount for Each Product (Revenue per Product)
+
+ SELECT p.product_id, p.product_name, SUM(od.quantity * od.unit_price) AS total_revenue
+FROM OrderDetails od
+JOIN Products p ON od.product_id = p.product_id
+GROUP BY p.product_id, p.product_name;
+
+ 3. Find the Most Expensive Product Sold
+
+SELECT p.product_id, p.product_name, MAX(od.unit_price) AS highest_price
+FROM OrderDetails od
+JOIN Products p ON od.product_id = p.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY highest_price DESC
+LIMIT 1;
+
+ 4. Get the List of Customers Who Have Placed Orders in the Last 30 Days
+
+SELECT DISTINCT c.customer_id, c.first_name, c.last_name, c.email, c.phone
+FROM Customers c
+JOIN Orders o ON c.customer_id = o.customer_id
+WHERE o.order_date >= CURDATE() - INTERVAL 30 DAY;
+
+
+ 5. Calculate the Total Amount Paid by Each Customer
+
+  SELECT o.customer_id, SUM(p.payment_amount) AS total_paid
+FROM Payments p
+JOIN Orders o ON p.order_id = o.order_id
+GROUP BY o.customer_id;
+
+
+ 6. Get the Number of Products Sold by Category
+
+SELECT p.category, SUM(od.quantity) AS total_sold
+FROM OrderDetails od
+JOIN Products p ON od.product_id = p.product_id
+GROUP BY p.category;
+
+
+ 7. List All Orders That Are Pending (i.e., Orders that haven't been shipped yet)
+
+SELECT o.order_id, o.customer_id, o.order_date, o.total_amount, o.order_status
+FROM Orders o
+WHERE o.order_status = 'Pending';
+
+
+ 8. Find the Average Order Value (Total Order Amount / Number of Orders)
+
+SELECT AVG(o.total_amount) AS average_order_value
+FROM Orders o;
+
+
+9. List the Top 5 Customers Who Have Spent the Most Money
+
+SELECT o.customer_id, SUM(p.payment_amount) AS total_spent
+FROM Payments p
+JOIN Orders o ON p.order_id = o.order_id
+GROUP BY o.customer_id
+ORDER BY total_spent DESC
+LIMIT 5;
+
+
+ 10. Find the Products That Have Never Been Sold
+
+SELECT p.product_id, p.product_name
+FROM Products p
+LEFT JOIN OrderDetails od ON p.product_id = od.product_id
+WHERE od.product_id IS NULL;
