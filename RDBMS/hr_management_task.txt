@@ -1,0 +1,45 @@
+
+4. HR Management Application.
+
+-> Assignment Queries :-
+
+ 1. Retrieve the names and contact details of employees hired after January 1, 2023.
+
+ - >  SELECT * FROM employees WHERE `HireDate`>'2023-01-01' 
+
+ 2. Find the total payroll amount paid to each department.
+
+ - > SELECT e.DepartmentID,d.DepartmentName,SUM(p.Amount) TotalPayrollAmount FROM payroll p INNER JOIN employees e ON p.EmployeeID=e.EmployeeID INNER JOIN departments d ON e.DepartmentID=d.DepartmentID GROUP BY d.DepartmentID
+
+ 3. List all employees who have not been assigned a manager.
+
+ - > SELECT * FROM employees WHERE ManagerID IS null
+
+4. Retrieve the highest salary in each department along with the employee’s name.
+
+ - > SELECT e.FirstName,e.LastName,MAX(e.Salary),e.DepartmentID,d.DepartmentName FROM employees e INNER JOIN departments d ON e.DepartmentID=d.DepartmentID GROUP BY DepartmentID
+
+ 5. Find the most recent performance review for each employee.
+
+ - > SELECT p.EmployeeID,e.FirstName,e.LastName,MAX(p.ReviewDate)RecentPerformanceReviewDate FROM performancereviews p INNER JOIN employees e ON p.EmployeeID=e.EmployeeID GROUP BY p.EmployeeID
+
+ 6. Count the number of employees in each department.
+
+ - >  SELECT d.DepartmentID,d.DepartmentName,COUNT(e.DepartmentID) NumberOfEmployee FROM employees e INNER JOIN departments d ON e.DepartmentID=d.DepartmentID GROUP BY e.DepartmentID
+
+ 7. List all employees who have received a performance score of "Excellent." 
+
+ - > SELECT e.FirstName,e.LastName,p.PerformanceScore,p.Comments FROM employees e INNER JOIN performancereviews AS p ON e.EmployeeID=p.EmployeeID WHERE p.PerformanceScore="Excellent"
+
+ 8. Identify the most frequently used payment method in payroll.
+
+ - > SELECT PaymentMethod MostFreuentlyPaymentMethod,COUNT(PaymentMethod)NumOfTimes FROM payroll GROUP BY PaymentMethod ORDER BY NumOfTimes DESC LIMIT 1
+
+ 9. Retrieve the top 5 highest-paid employees along with their departments.
+
+ - > SELECT e.EmployeeID,e.FirstName,e.FirstName,e.Phone,e.Salary,d.DepartmentName FROM employees e INNER JOIN departments d ON e.DepartmentID=d.DepartmentID ORDER BY e.Salary DESC LIMIT 5
+
+ 10. Show details of all employees who report directly to a specific manager (e.g., ManagerID = 101)
+
+ - > SELECT EmployeeID,FirstName,LastName,DepartmentID FROM employees WHERE ManagerID = 1
+
