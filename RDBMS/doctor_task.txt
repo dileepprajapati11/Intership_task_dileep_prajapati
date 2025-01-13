@@ -1,0 +1,146 @@
+1. Find the Total Number of Appointments for Each Doctor 
+
+SELECT 
+    d.first_name AS doctor_first_name,
+    d.last_name AS doctor_last_name,
+    COUNT(a.appointment_id) AS total_appointments
+FROM 
+    Doctors d
+JOIN 
+    Appointments a ON d.doctor_id = a.doctor_id
+GROUP BY 
+    d.doctor_id;
+
+
+2. List All Patients Who Have an Appointment with a Specific Doctor (e.g., Dr. John Smith) 
+
+SELECT 
+    p.first_name AS patient_first_name,
+    p.last_name AS patient_last_name,
+    p.email AS patient_email,
+    p.phone AS patient_phone
+FROM 
+    Patients p
+JOIN 
+    Appointments a ON p.patient_id = a.patient_id
+JOIN 
+    Doctors d ON a.doctor_id = d.doctor_id
+WHERE 
+    d.first_name = 'John' AND d.last_name = 'Smith';
+
+
+3. Find the Number of Appointments Scheduled in a Specific Department 
+
+SELECT 
+    dep.department_name,
+    COUNT(a.appointment_id) AS total_appointments
+FROM 
+    Appointments a
+JOIN 
+    Doctors d ON a.doctor_id = d.doctor_id
+JOIN 
+    Departments dep ON d.department_id = dep.department_id
+GROUP BY 
+    dep.department_name;
+
+
+4. Find the Most Popular Specialty Based on Number of Appointments 
+
+
+SELECT 
+    s.specialty_name,
+    COUNT(a.appointment_id) AS total_appointments
+FROM 
+    Appointments a
+JOIN 
+    Doctors d ON a.doctor_id = d.doctor_id
+JOIN 
+    Specialties s ON d.specialty_id = s.specialty_id
+GROUP BY 
+    s.specialty_name
+ORDER BY 
+    total_appointments DESC
+LIMIT 1;
+
+
+
+5. Get the Total Payment Amount for All Completed Appointments 
+
+SELECT 
+    SUM(p.payment_amount) AS total_payment
+FROM 
+    Payments p
+JOIN 
+    Appointments a ON p.appointment_id = a.appointment_id
+WHERE 
+    a.status = 'Completed';
+
+
+6. Find the Number of Patients Seen by Each Doctor 
+
+SELECT 
+    d.first_name AS doctor_first_name,
+    d.last_name AS doctor_last_name,
+    COUNT(DISTINCT a.patient_id) AS total_patients
+FROM 
+    Appointments a
+JOIN 
+    Doctors d ON a.doctor_id = d.doctor_id
+GROUP BY 
+    d.doctor_id;
+
+
+7. List All Patients Who Have Missed Their Appointments (Status 'Cancelled') 
+
+SELECT 
+    p.first_name AS patient_first_name,
+    p.last_name AS patient_last_name,
+    p.email AS patient_email,
+    p.phone AS patient_phone
+FROM 
+    Patients p
+JOIN 
+    Appointments a ON p.patient_id = a.patient_id
+WHERE 
+    a.status = 'Cancelled';
+
+
+
+8. Find the Total Number of Appointments for Each Status (Scheduled, Completed, Cancelled) 
+
+SELECT 
+    a.status,
+    COUNT(a.appointment_id) AS total_appointments
+FROM 
+    Appointments a
+GROUP BY 
+    a.status;
+
+
+9. Get the Average Payment Amount for Completed Appointments 
+
+SELECT 
+    AVG(p.payment_amount) AS average_payment
+FROM 
+    Payments p
+JOIN 
+    Appointments a ON p.appointment_id = a.appointment_id
+WHERE 
+    a.status = 'Completed';
+
+
+10. Find the Doctor with the Highest Number of Appointments
+
+SELECT 
+    d.first_name AS doctor_first_name,
+    d.last_name AS doctor_last_name,
+    COUNT(a.appointment_id) AS total_appointments
+FROM 
+    Appointments a
+JOIN 
+    Doctors d ON a.doctor_id = d.doctor_id
+GROUP BY 
+    d.doctor_id
+ORDER BY 
+    total_appointments DESC
+LIMIT 1;
